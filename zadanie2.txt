@@ -1,0 +1,68 @@
+#!/bin/bash
+
+is_valid_ip() {
+  local ip=$1
+  local valid_regex='^([0-9]{1,3}\.){3}[0-9]{1,3}$'
+  
+  if [[ $ip =~ $valid_regex ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+is_valid_cidr() {
+  local cidr=$1
+  local valid_regex='^([0-9]{1,3}\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$'
+  
+  if [[ $cidr =~ $valid_regex ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+calculate_network_address() {
+  local cidr=$1
+  local ip=${cidr%/*}
+  local subnet=${cidr#*/}
+
+  local IFS='.'
+  read -ra octets <<< "$ip"
+
+  local network_address="${octets[0]}.${octets[1]}.${octets[2]}."
+  local network_address+=$((octets[3] & ~(2**(32-subnet)-1)))
+
+  echo "Adres sieci: $network_address/$subnet"
+}
+
+calculate_broadcast_address() {
+  local cidr=$1
+  local ip=${cidr%/*}
+  local subnet=${cidr#*/}
+
+  local IFS='.'
+  read -ra octets <<< "$ip"
+
+  local broadcast_address="${octets[0]}.${octets[1]}.${octets[2]}."
+  local broadcast_address+=$((octets[3] | (2**(32-subnet)-1)))
+
+  echo "Adres rozgłoszeniowy: $broadcast_address/$subnet"
+}
+
+if [[ $# -eq 1 ]]; then
+  input=$1
+else
+  read -p "Podaj adres IPv4 w postaci CIDR: " input
+fi
+
+if ! is_valid_cidr "$input"; then
+  echo "Błąd: Podane wejście nie jest prawidłowym adresem IPv4 w postaci CIDR."
+  exit 1
+fi
+
+cidr=$input
+
+calculate_network_address "$cidr"
+
+calculate_broadcast_address "$cidr"

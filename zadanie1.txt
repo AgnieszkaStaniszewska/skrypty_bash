@@ -1,0 +1,96 @@
+#!/bin/bash
+
+# Funkcja obliczająca największy wspólny dzielnik (NWD) dwóch liczb
+nwd() {
+  local a=$1
+  local b=$2
+  local temp
+
+  while [[ $b -ne 0 ]]; do
+    temp=$b
+    b=$(($a % $b))
+    a=$temp
+  done
+
+  echo $a
+}
+
+# Funkcja obliczająca najmniejszą wspólną wielokrotność (NWW) dwóch liczb
+nww() {
+  local a=$1
+  local b=$2
+  local gcd=$(nwd $a $b)
+
+  local nww=$((a / gcd * b))
+  echo $nww
+}
+
+# Sprawdzanie, czy dwie liczby są względnie pierwsze
+are_coprime() {
+  local a=$1
+  local b=$2
+  local gcd=$(nwd $a $b)
+
+  if [[ $gcd -eq 1 ]]; then
+    echo "Liczby $a i $b są względnie pierwsze."
+  else
+    echo "Liczby $a i $b nie są względnie pierwsze."
+  fi
+}
+
+# Pobieranie liczb od użytkownika
+read_numbers() {
+  read -p "Podaj pierwszą liczbę naturalną: " num1
+  read -p "Podaj drugą liczbę naturalną: " num2
+
+  # Sprawdzanie, czy liczby są dodatnie liczbami naturalnymi
+  if [[ $num1 -le 0 || $num2 -le 0 ]]; then
+    echo "Błąd: Podane wartości nie są dodatnimi liczbami naturalnymi."
+    exit 1
+  fi
+}
+
+# Wybór opcji z menu
+select_option() {
+  echo "Wybierz opcję:"
+  echo "1. Oblicz największy wspólny dzielnik (NWD)."
+  echo "2. Oblicz najmniejszą wspólną wielokrotność (NWW)."
+  echo "3. Sprawdź, czy liczby są względnie pierwsze."
+  echo "4. Wyjście."
+
+  read -p "Twój wybór: " option
+
+  case $option in
+  1)
+    echo "Największy wspólny dzielnik (NWD) wynosi: $(nwd $num1 $num2)"
+    ;;
+  2)
+    echo "Najmniejsza wspólna wielokrotność (NWW) wynosi: $(nww $num1 $num2)"
+    ;;
+  3)
+    are_coprime $num1 $num2
+    ;;
+  4)
+    exit 0
+    ;;
+  *)
+    echo "Błąd: Nieprawidłowa opcja."
+    ;;
+  esac
+}
+
+# Główna część skryptu
+
+if [[ $# -eq 2 ]]; then
+  # Przekazano argumenty wiersza polecenia
+  num1=$1
+  num2=$2
+  read_numbers
+else
+  # Pobieranie liczb interaktywnie
+  read_numbers
+fi
+
+while true; do
+  select_option
+done

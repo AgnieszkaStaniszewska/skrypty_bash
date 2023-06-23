@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Funkcja sprawdzająca, czy podane wejście jest liczbą naturalną
+is_valid_number() {
+  local number=$1
+  local valid_regex='^[1-9][0-9]*$'
+  
+  if [[ $number =~ $valid_regex ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# Funkcja konwertująca liczbę dziesiętną na dwójkową
+convert_to_binary() {
+  local decimal=$1
+  local binary=""
+  
+  while [[ $decimal -gt 0 ]]; do
+    local remainder=$(( decimal % 2 ))
+    binary="$remainder$binary"
+    decimal=$(( decimal / 2 ))
+  done
+  
+  echo "Zapis dwójkowy: $binary"
+}
+
+# Główna część skryptu
+
+if [[ $# -eq 1 ]]; then
+  # Przekazano argument wiersza polecenia
+  input=$1
+else
+  # Pobieranie wejścia interaktywnie
+  read -p "Podaj liczbę naturalną: " input
+fi
+
+# Sprawdzanie poprawności liczby naturalnej
+if ! is_valid_number "$input"; then
+  echo "Błąd: Podane wejście nie jest liczbą naturalną."
+  exit 1
+fi
+
+number=$input
+
+# Konwersja liczby dziesiętnej na dwójkową
+convert_to_binary "$number"
