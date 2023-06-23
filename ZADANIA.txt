@@ -1,0 +1,16 @@
+1. Napisz funkcję powłoki BASH realizującą algorytm Euklidesa. Wykorzystaj tę funkcję w skrypcie, który dla dwóch dodatnich liczb
+   naturalnych (i) oblicza ich największy wspólny dzielnik; (ii) oblicza ich najmniejszą wspólną wielokrotność; (iii) sprawdza,
+   czy są one względnie pierwsze. Liczby mogą być przekazane interaktywnie lub jako argumenty wiersza polecenia.
+   Zadanie do wykonania (i)–(iii) należy określić przez wybór z menu lub jako opcję.
+   W przypadku, gdy przekazane wartości wejściowe nie są dodatnimi liczbami naturalnymi, skrypt ma przerwać działanie i zwrócić błąd.
+   Wskazówki:
+    1) nww(n, m) = (n / nwd(n, m)) · m przy założeniu, że n ≥ m.
+    2) n i m są względnie pierwsze, jeżeli nwd(n, m) = 1.
+
+2. Napisz skrypt, który dla podanego wejścia (interaktywnie lub jako argument polecenia) sprawdza, czy podane wejście jest prawidłowym
+   adresem IPv4 zapisanym w postaci CIDR (np 123.45.67.89/24); jeżeli nie, to generuje komunikat i błąd.
+   Jeżeli wejście jest prawidłowym adresem IP, to oblicza dla niego adres sieci i adres rozgłoszeniowy.
+
+3. Napisz skrypt konwertujący liczbę naturalną w zapisie dziesiętnym do zapisu dwójkowego (można wykorzystać algorytm kolejnych dzieleń).
+   Liczba może zostać przekazana interaktywnie lub jako argument wiersza polecenia.  
+   Jeżeli wejście nie byłoby liczbą naturalną, skrypt ma wygenerować komunikat o błędzie.
